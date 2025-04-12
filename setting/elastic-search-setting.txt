@@ -1,0 +1,56 @@
+PUT test-index
+{
+  "aliases": {  }, 
+  "settings": {
+    "index": {
+      "analysis": {
+        "analyzer": {
+          "std_analyzer": {
+            "tokenizer": "standard",
+            "filter": ["lowercase", "stop", "porter_stem"],
+            "char_filter": ["mappings_filter", "html_strip"]
+          }
+        },
+        "char_filter": {
+          "mappings_filter": {
+            "type": "mapping",
+            "mappings": [
+              "&lt; => little",
+              "&gt; => greater"
+            ]
+          }
+        }
+      },
+      "similarity" : {
+        "default" : { 
+          "type" : "BM25"
+        }
+      }
+    }
+  },
+  
+  "mappings": {
+    "properties": {
+      "searchdate": {
+          "type": "date" 
+        },
+      "title": {
+          "type": "text",
+          "analyzer": "standard"
+      },
+      "pmid": {
+          "type": "keyword"
+      },
+      "authors": {
+          "type": "keyword"
+      },
+      "date": {
+          "type": "text"
+      },
+      "abstract": {
+          "type": "text",
+          "analyzer": "standard"
+      }
+    }
+  }
+}

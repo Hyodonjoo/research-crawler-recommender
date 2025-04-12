@@ -1,0 +1,32 @@
+GET logstash-2023.12.04-000001/_search
+{
+  "from": 0,
+  "size": 2000,
+  "_source": ["title"],
+  "query": {
+    "bool": {
+      "should": [
+        {
+        "match": {
+          "message": "Relationship between blood alcohol concentration on admission and outcome in dimethoate organophosphorus self-poisoning"
+          }
+        },
+        {
+          "match_phrase": {
+            "title": {"query": "blood alchol","slop": 2,  "boost":1}
+          }
+        },
+        {
+          "match_phrase": {
+            "title": {"query": "relationship", "boost":1}
+          }
+        },
+        {
+          "match_phrase": {
+            "title": {"query": "between and","slop": 10,  "boost":1}
+          }
+        }
+      ]
+    }
+  }
+}

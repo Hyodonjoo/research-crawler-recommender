@@ -1,0 +1,35 @@
+input {
+    file {
+        path => "C:/Users/wngye/output_test_2.json"
+        start_position => "beginning"
+        codec => "json"  # JSON 형식의 파일을 처리
+    }
+}
+
+filter {
+    json {
+        source => "message"
+        target => "parsed_contents"
+    }
+    mutate {
+        add_field => {
+            "searchdate" => "%{[parsed_contents][searchdate]}"
+            "title" => "%{[parsed_contents][title]}"
+            "pmid" => "%{[parsed_contents][pmid]}"
+            "authors" => "%{[parsed_contents][authors]}"
+            "date" => "%{[parsed_contents][date]}"
+            "abstract" => "%{[parsed_contents][abstract]}"
+        }
+    }
+}
+
+output {
+    # elasticsearch {
+    #     hosts => ["34.64.61.107:9200"]
+    #     user => "elastic"
+    #     password => "ray299792458"
+    # }
+    stdout {
+        codec => "rubydebug"
+    }
+}
